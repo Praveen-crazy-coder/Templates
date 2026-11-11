@@ -1,0 +1,50 @@
+{
+  "providerId": "dkimkit.com",
+  "providerName": "DKIMkit",
+  "version": 1,
+  "syncPubKeyDomain": "dkimkit.com",
+  "logoUrl": "https://dkimkit.com/apple-touch-icon.png",
+  "serviceId": "mailgun",
+  "serviceName": "Email sending with Mailgun",
+  "description": "Sets up a Mailgun sending domain, applied to the sending domain (usually a subdomain via host): SPF merged into any existing record, DKIM TXT, tracking CNAME, and MX records for receiving.",
+  "variableDescription": "dkimselector: Mailgun DKIM selector (e.g. pic); dkimpub: the DKIM public key (the p= value); mgdomain: mailgun.org, or eu.mailgun.org for the EU region.",
+  "records": [
+    {
+      "type": "SPFM",
+      "groupId": "auth",
+      "host": "@",
+      "spfRules": "include:mailgun.org"
+    },
+    {
+      "type": "TXT",
+      "groupId": "auth",
+      "host": "%dkimselector%._domainkey",
+      "data": "k=rsa; p=%dkimpub%",
+      "ttl": 3600,
+      "txtConflictMatchingMode": "All"
+    },
+    {
+      "type": "CNAME",
+      "groupId": "tracking",
+      "host": "email",
+      "pointsTo": "%mgdomain%",
+      "ttl": 3600
+    },
+    {
+      "type": "MX",
+      "groupId": "inbound",
+      "host": "@",
+      "pointsTo": "mxa.%mgdomain%",
+      "priority": 10,
+      "ttl": 3600
+    },
+    {
+      "type": "MX",
+      "groupId": "inbound",
+      "host": "@",
+      "pointsTo": "mxb.%mgdomain%",
+      "priority": 10,
+      "ttl": 3600
+    }
+  ]
+}

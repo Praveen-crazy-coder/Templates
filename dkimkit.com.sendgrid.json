@@ -1,0 +1,42 @@
+{
+  "providerId": "dkimkit.com",
+  "providerName": "DKIMkit",
+  "version": 1,
+  "syncPubKeyDomain": "dkimkit.com",
+  "logoUrl": "https://dkimkit.com/apple-touch-icon.png",
+  "serviceId": "sendgrid",
+  "serviceName": "Email sending with SendGrid",
+  "description": "Authenticates a sending domain with Twilio SendGrid (automated security): return-path CNAME and two DKIM CNAMEs, optionally an MX record for Inbound Parse.",
+  "variableDescription": "emid: digits of the return-path host em{emid}; userid and shard: from the SendGrid targets u{userid}.wl{shard}.sendgrid.net. Inbound Parse mail is received at parse.",
+  "records": [
+    {
+      "type": "CNAME",
+      "groupId": "auth",
+      "host": "em%emid%",
+      "pointsTo": "u%userid%.wl%shard%.sendgrid.net",
+      "ttl": 3600
+    },
+    {
+      "type": "CNAME",
+      "groupId": "auth",
+      "host": "s1._domainkey",
+      "pointsTo": "s1.domainkey.u%userid%.wl%shard%.sendgrid.net",
+      "ttl": 3600
+    },
+    {
+      "type": "CNAME",
+      "groupId": "auth",
+      "host": "s2._domainkey",
+      "pointsTo": "s2.domainkey.u%userid%.wl%shard%.sendgrid.net",
+      "ttl": 3600
+    },
+    {
+      "type": "MX",
+      "groupId": "inbound",
+      "host": "parse",
+      "pointsTo": "mx.sendgrid.net",
+      "priority": 10,
+      "ttl": 3600
+    }
+  ]
+}

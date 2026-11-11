@@ -1,0 +1,36 @@
+{
+  "providerId": "dkimkit.com",
+  "providerName": "DKIMkit",
+  "version": 1,
+  "syncPubKeyDomain": "dkimkit.com",
+  "logoUrl": "https://dkimkit.com/apple-touch-icon.png",
+  "serviceId": "postmark",
+  "serviceName": "Email sending with Postmark",
+  "description": "Verifies a sending domain with Postmark: DKIM TXT record and Return-Path CNAME, optionally an MX record for inbound email.",
+  "variableDescription": "dkimselector: Postmark DKIM selector (e.g. 20240101123456pm); dkimpub: the DKIM public key (the p= value). The Return-Path is pm-bounces; inbound mail is received at parse.",
+  "records": [
+    {
+      "type": "TXT",
+      "groupId": "auth",
+      "host": "%dkimselector%._domainkey",
+      "data": "k=rsa; p=%dkimpub%",
+      "ttl": 3600,
+      "txtConflictMatchingMode": "All"
+    },
+    {
+      "type": "CNAME",
+      "groupId": "auth",
+      "host": "pm-bounces",
+      "pointsTo": "pm.mtasv.net",
+      "ttl": 3600
+    },
+    {
+      "type": "MX",
+      "groupId": "inbound",
+      "host": "parse",
+      "pointsTo": "inbound.postmarkapp.com",
+      "priority": 10,
+      "ttl": 3600
+    }
+  ]
+}

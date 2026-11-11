@@ -1,0 +1,56 @@
+{
+  "providerId": "dkimkit.com",
+  "providerName": "DKIMkit",
+  "version": 1,
+  "syncPubKeyDomain": "dkimkit.com",
+  "logoUrl": "https://dkimkit.com/apple-touch-icon.png",
+  "serviceId": "ses",
+  "serviceName": "Email sending with Amazon SES",
+  "description": "Verifies a domain identity in Amazon SES with Easy DKIM (three CNAMEs), optionally a custom MAIL FROM domain (MX and SPF) and an MX record for receiving.",
+  "variableDescription": "dkim1, dkim2, dkim3: the Easy DKIM tokens; region: the SES region (e.g. us-east-1). The MAIL FROM domain is mail; inbound mail is received at parse.",
+  "records": [
+    {
+      "type": "CNAME",
+      "groupId": "auth",
+      "host": "%dkim1%._domainkey",
+      "pointsTo": "%dkim1%.dkim.amazonses.com",
+      "ttl": 3600
+    },
+    {
+      "type": "CNAME",
+      "groupId": "auth",
+      "host": "%dkim2%._domainkey",
+      "pointsTo": "%dkim2%.dkim.amazonses.com",
+      "ttl": 3600
+    },
+    {
+      "type": "CNAME",
+      "groupId": "auth",
+      "host": "%dkim3%._domainkey",
+      "pointsTo": "%dkim3%.dkim.amazonses.com",
+      "ttl": 3600
+    },
+    {
+      "type": "MX",
+      "groupId": "mailfrom",
+      "host": "mail",
+      "pointsTo": "feedback-smtp.%region%.amazonses.com",
+      "priority": 10,
+      "ttl": 3600
+    },
+    {
+      "type": "SPFM",
+      "groupId": "mailfrom",
+      "host": "mail",
+      "spfRules": "include:amazonses.com"
+    },
+    {
+      "type": "MX",
+      "groupId": "inbound",
+      "host": "parse",
+      "pointsTo": "inbound-smtp.%region%.amazonaws.com",
+      "priority": 10,
+      "ttl": 3600
+    }
+  ]
+}
